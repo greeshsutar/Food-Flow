@@ -12,7 +12,7 @@ export default function Header() {
   return (
     <div >
         <nav className=" flex p-2 justify-between items-center bg-gray-900 text-amber-50">
-  <img className="logo size-15  rounded-xl" src="https://cdn.brandfetch.io/ideeTxiKQK/w/480/h/480/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1764508876740"  /> 
+  <img className="logo ml-5 size-15  rounded-xl" src="https://cdn.brandfetch.io/ideeTxiKQK/w/480/h/480/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1764508876740"  /> 
  
 
         <ol className="Orderlist  flex  m-2  " >
