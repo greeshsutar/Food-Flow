@@ -10,6 +10,8 @@ import SignUp from './component/Header/SignUp.jsx'
 import Cart from './component/Cart.jsx'
 import Login from './component/Header/Login.jsx'
 import Error from './component/Error.jsx'
+import Menu from './component/Menu.jsx'
+import RestraurentCard from './component/RestraurentCard.jsx'
  
 const appRouter = createBrowserRouter([
   {
@@ -17,12 +19,14 @@ const appRouter = createBrowserRouter([
     element: <App />,
     errorElement: <Error />,
     children: [
-      { index: true, element: <Body /> },   // ✅ Home only
+      { index: true, element: <Body /> },   
       { path: "search", element: <Search /> },
       { path: "offer", element: <Offers /> },
       { path: "signup", element: <SignUp /> },
       { path: "cart", element: <Cart /> },
-      { path: "login", element: <Login /> }
+      { path: "login", element: <Login /> },
+      {path:"RestraurentCard/:id",element:<Menu/>}
+      
     ]
   }
 ]);
