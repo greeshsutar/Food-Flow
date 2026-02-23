@@ -11,11 +11,11 @@ const[apidata,setapidata]=useState([]);
 
         const response = await axios.get(url);
        console.log(response.data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants);
-        console.log(response.data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants[0].info.cuisines);
-         console.log(response.data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants[0].info.locality)
-        console.log(response.data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants[0].info.name);
-         console.log(response.data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants[0].info.sla.slaString);
-          console.log(response.data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants[0].info.avgRating);
+        // console.log(response.data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants[0].info.cuisines);
+        //  console.log(response.data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants[0].info.locality)
+        // console.log(response.data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants[0].info.name);
+        //  console.log(response.data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants[0].info.sla.slaString);
+        //   console.log(response.data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants[0].info.avgRating);
        setapidata(response.data.data.cards[4].card.card.gridElements.infoWithStyle.restaurants); // better
       } catch (error) {
         console.log(error);

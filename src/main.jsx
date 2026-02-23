@@ -12,6 +12,7 @@ import Login from './component/Header/Login.jsx'
 import Error from './component/Error.jsx'
 import Menu from './component/Menu.jsx'
 import RestraurentCard from './component/RestraurentCard.jsx'
+import Clock from './component/Clock.jsx'
  
 const appRouter = createBrowserRouter([
   {
@@ -25,7 +26,9 @@ const appRouter = createBrowserRouter([
       { path: "signup", element: <SignUp /> },
       { path: "cart", element: <Cart /> },
       { path: "login", element: <Login /> },
-      {path:"RestraurentCard/:id",element:<Menu/>}
+      {path:"RestraurentCard/:id",element:<Menu/>},
+      {path:"clock",element:<Clock/>}
+    
       
     ]
   }
