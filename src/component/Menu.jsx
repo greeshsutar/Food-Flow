@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addItem } from "./utils/CartSlice";
 
 export default function Menu() {
 
@@ -12,28 +14,41 @@ export default function Menu() {
     async function menudata() {
       try {
         let data =
-          `https://www.swiggy.com/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=15.796320490637022&lng=74.47427418082952&restaurantId=${id ?? 445632 }&submitAction=ENTER`;
+          `https://www.swiggy.com/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=15.796320490637022&lng=74.47427418082952&restaurantId=${id}&submitAction=ENTER`;
 
         let response = await axios.get(data);
 
         console.log(response.data.data.statusMessage);
 
         console.log(
-          response.data.data.cards[5].groupedCard.cardGroupMap.REGULAR.cards[3]
-            .card.card.itemCards
+          response?.data?.data?.cards?.[5]
+    ?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[5]
+    ?.card?.card?.itemCards
         );
 
-        setrestdetail(
-          response.data.data.cards[5].groupedCard.cardGroupMap.REGULAR.cards[3]
-            .card.card.itemCards
-        );
+    const items =
+  response?.data?.data?.cards?.[5]
+    ?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[5]
+    ?.card?.card?.itemCards;
+
+setrestdetail(items);
       } catch (error) {
         console.log(error);
       }
     }
 
     menudata();
-  }, []);
+  }, [id]);
+
+
+  // additem
+ let dispatchaction =  useDispatch();
+
+  function handleaction(item){
+    console.log("Clicked", item);
+    console.log(item.card.info.id)
+      dispatchaction(addItem(item))
+  }
 
   return (
     <>
@@ -41,7 +56,7 @@ export default function Menu() {
         <h1 className="ml-9">Recommended (20)</h1>
       </div>
 
-      {restdetail.map((item) => {
+      {restdetail?.map((item) => {
         return (
           <div className="flex flex-row-reverse items-start  border-b-2   border-gray-300     justify-between p-4">
 
@@ -52,7 +67,7 @@ export default function Menu() {
                 src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_300,h_300,c_fit/${item.card.info.imageId}`}
                 alt="pizza photo"
               />
-    <div className=" flex justify-center " >   <button className=" border-2 rounded-xl p-1.5  font-bold mr-10 mb-2 -mt-6 w-30   bg-white  text-green-600 " >ADD</button></div>        
+    <div className=" flex justify-center " >   <button className=" border-2 rounded-xl p-1.5  font-bold mr-10 mb-2 -mt-6 w-30   bg-white  text-green-600 cursor-pointer "   onClick={() => handleaction(item)} >ADD</button></div>        
             </div>
 
             {/* Text Section */}

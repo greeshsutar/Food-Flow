@@ -5,9 +5,12 @@ import { LuHandHelping } from "react-icons/lu";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { MdOutlineLogin } from "react-icons/md";
 import { IoPersonOutline } from "react-icons/io5";
+import { useSelector } from "react-redux";
 
 
 export default function Header() {
+  let cartItem=useSelector((store)=> store.cart.items )
+  console.log(cartItem);
 
   return (
     <div >
@@ -25,7 +28,7 @@ export default function Header() {
        <div className="flex m-2  items-center"> <span><BiSolidOffer/></span> <li className=" m-2.5"><Link to="/Offers">Offer</Link></li></div>  
 
        <div className="flex  m-2  items-center"><span><IoPersonOutline/></span><li className="  m-2.5"><Link to="/SignUp">SignUp</Link></li></div>   
-        <div className="flex m-2  items-center"> <span><MdOutlineShoppingCart/></span><li className=" m-2.5"><Link to="/Cart">Cart</Link></li></div>  
+        <div className="flex m-2  items-center"> <span><MdOutlineShoppingCart/></span><li className=" m-2.5"><Link to="/Cart">Cart-{cartItem.length}</Link></li></div>  
       <div className="flex m-2   items-center"> <span><MdOutlineLogin/></span><li className=" m-2.5"><Link to="/Login">Login</Link></li></div>    
       
         </ol> 

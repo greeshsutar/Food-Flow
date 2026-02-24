@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
@@ -13,7 +13,8 @@ import Error from './component/Error.jsx'
 import Menu from './component/Menu.jsx'
 import RestraurentCard from './component/RestraurentCard.jsx'
 import Clock from './component/Clock.jsx'
- 
+import appStore from './component/utils/appStore.js'
+ import { Provider } from "react-redux";
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -21,13 +22,13 @@ const appRouter = createBrowserRouter([
     errorElement: <Error />,
     children: [
       { index: true, element: <Body /> },   
-      { path: "search", element: <Search /> },
-      { path: "offer", element: <Offers /> },
-      { path: "signup", element: <SignUp /> },
-      { path: "cart", element: <Cart /> },
-      { path: "login", element: <Login /> },
-      {path:"RestraurentCard/:id",element:<Menu/>},
-      {path:"clock",element:<Clock/>}
+      { path: "/search", element: <Search /> },
+      { path: "/offer", element: <Offers /> },
+      { path: "/signup", element: <SignUp /> },
+      { path: "/cart", element: <Cart /> },
+      { path: "/login", element: <Login /> },
+      {path:"/RestraurentCard/:id",element:<Menu/>},
+      {path:"/clock",element:<Clock/>}
     
       
     ]
@@ -36,6 +37,8 @@ const appRouter = createBrowserRouter([
 
 
 createRoot(document.getElementById('root')).render(
-  <RouterProvider  router={appRouter} ></RouterProvider>
+  <Provider store={appStore}>
+    <RouterProvider router={appRouter} />
+  </Provider>
 )
  

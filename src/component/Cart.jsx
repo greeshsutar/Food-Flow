@@ -1,17 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
-import Menu from "./Menu";
-import { clearCart, removeItem } from "./utils/CartSlice";
+// import Menu from "./Menu";
+import {  clearCart, removeItem } from "./utils/CartSlice";
 
 export default function Cart(){
   let cartitem = useSelector((store)=>store.cart.items)
   let removes=useDispatch();
   function handleremove(item){
-    removes(removeItem(item))
+    console.log(item);
+    removes(removeItem(item.card.info.id))
   }
 
   let cleardata= useDispatch();
   function handleclear(){
-    cleardata(clearCart())
+    cleardata(clearCart());
   }
    return (
     <>
@@ -20,7 +21,7 @@ export default function Cart(){
       </div>  
 
       <div>
-        <button onClick={handleclear}></button>
+        <button onClick={handleclear} className=" border-2 ml-10 rounded-xl p-2 w-20 bg-red-500 text-amber-50 font-bold" >Clear</button>
       </div>
 
       {cartitem.map((item) => {
@@ -28,7 +29,7 @@ export default function Cart(){
 
             
           <div className="flex flex-row-reverse items-start  border-b-2   border-gray-300     justify-between p-4">
-   <div><button onclick={handleremove(item)}>Clear Cart</button></div>
+   <div><button className=" bg-red-500  font-bold w-20 border-2 rounded-xl p-2 text-amber-50" onClick={() => handleremove(item)}>Remove</button></div>
             {/* Image Section */}
             <div className=" ml-4 flex-shrink-0">
               <img 
@@ -36,7 +37,7 @@ export default function Cart(){
                 src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_300,h_300,c_fit/${item.card.info.imageId}`}
                 alt="pizza photo"
               />
-    <div className=" flex justify-center " >   <button className=" border-2 rounded-xl p-1.5  font-bold mr-10 mb-2 -mt-6 w-30   bg-white  text-green-600 " onclick={handleaction(item)} >ADD</button></div>        
+    
             </div>
 
             {/* Text Section */}
