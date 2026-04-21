@@ -1,69 +1,79 @@
-
 import { useState } from "react";
-
 import RestraurentCard from "./RestraurentCard";
 import UseApi from "./UseApi";
 import Clock from "./Clock";
 
+export default function Body() {
+  const swiggydata = UseApi();
+  const [datafilter, setdatafilter] = useState([]);
+  const [inputdata, setinputdata] = useState("");
 
-
-
-export default function Body(){
-    
-        let swiggydata = UseApi();
-        const[datafilter,setdatafilter]=useState([]);
-        const[inputdata,setinputdata]=useState("");
- // 4.5 rating button
-function handleclick(){
+  function handleclick() {
     if (!swiggydata?.length) return;
-   let filterdata= swiggydata.filter(item=>
-    item.info.avgRating >= 4.5
-      
-    
-    )
-         setdatafilter(filterdata);
+    setdatafilter(swiggydata.filter((item) => item.info.avgRating >= 4.1));
+  }
 
-}
-//reset buttton
-function handlereset(){
+  function handlereset() {
     setdatafilter([]);
-}
+    setinputdata("");
+  }
 
-//search
-function handleinput(searchText){
- setinputdata(searchText);
- let searchdata= swiggydata.filter((item)=>{
-   return  item.info.name.toLowerCase().includes(searchText.toLowerCase())
-     
- })
-setdatafilter(searchdata);
-}
-  console.log(swiggydata);
-    return(
-        <>
-        <div className=" ml-20  flex justify-start">
-         <div className="  w-11/12" >
-            <h2 className=" mt-4  ml-2 font-bold text-xl ">Restaurants with online food delivery in Belgaum</h2>
-         <div className=" flex " > <button className=" mt-4 ml-2 rounded-xl p-2 bg-red-500 text-amber-50 cursor-pointer" onClick={handleclick}>
-                Rating 4.5+</button>
-                <button className= "bg-red-500  mt-4 ml-4 p-2 rounded-xl text-amber-50 w-20 cursor-pointer " onClick={handlereset}>Reset</button>
-           <input value={inputdata} type="search" placeholder="Search here " className="border-2  mt-4 ml-15  w-2/5 h-11 rounded-xl p-4 " onChange={(e)=>handleinput(e.target.value)}></input> 
-              <div className=" ml-9 flex justify-center items-center mt-4 w-20 border-2 rounded-xl bg-red-500 text-amber-50  border-gray-300"> <Clock/></div> </div>
-           
-            
-          
+  function handleinput(searchText) {
+    setinputdata(searchText);
+    setdatafilter(
+      swiggydata.filter((item) =>
+        item.info.name.toLowerCase().includes(searchText.toLowerCase())
+      )
+    );
+  }
+
+  return (
+    <div className="max-w-screen-xl mx-auto px-6 py-4">
+
+      {/* Title */}
+      <h2 className="font-bold text-xl text-gray-800 mb-4">
+        Restaurants with online food delivery in Belgaum
+      </h2>
+
+      {/* Filter Bar */}
+      <div className="flex flex-wrap items-center gap-3 mb-6">
+
+        {/* Rating Button */}
+        <button
+          onClick={handleclick}
+          className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-lg transition-colors"
+        >
+          ⭐ Rating 4.1+
+        </button>
+
+        {/* Reset Button */}
+        <button
+          onClick={handlereset}
+          className="px-4 py-2 border border-gray-300 text-gray-600 hover:border-orange-400 hover:text-orange-500 text-sm font-semibold rounded-lg transition-colors"
+        >
+          Reset
+        </button>
+
+        {/* Search */}
+        <div className="relative flex-1 min-w-[200px] max-w-md">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+          <input
+            value={inputdata}
+            type="search"
+            placeholder="Search restaurants..."
+            onChange={(e) => handleinput(e.target.value)}
+            className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white"
+          />
+        </div>
+
+        {/* Clock */}
+        <Clock />
 
       </div>
-       </div>
-        <div className=" flex  flex-wrap  justify-center ">
-        <RestraurentCard  swiggydata={swiggydata} datafilter={datafilter} />
-  
 
-        
-        </div>
-      
-       
-       </>
-       
-    )
+      {/* Restaurant Cards */}
+      <RestraurentCard swiggydata={swiggydata} datafilter={datafilter} />
+
+    </div>
+  );
 }
