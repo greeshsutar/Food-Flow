@@ -26,7 +26,14 @@ export default function Body() {
       )
     );
   }
-
+if (!swiggydata?.length) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-3">
+        <div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div>
+        <p className="text-sm text-gray-400">Finding restaurants near you...</p>
+      </div>
+    );
+  }
   return (
     <div className="max-w-screen-xl mx-auto px-6 py-4">
 

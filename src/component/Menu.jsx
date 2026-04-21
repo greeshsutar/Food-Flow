@@ -40,7 +40,14 @@ export default function Menu() {
     console.log(item.card.info.id);
     dispatchaction(addItem(item));
   }
-
+if (!restdetail?.length) {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center gap-3">
+      <div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div>
+      <p className="text-sm text-gray-400">Loading menu...</p>
+    </div>
+  );
+}
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
 
