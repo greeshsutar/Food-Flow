@@ -13,9 +13,9 @@ export default function Menu() {
   useEffect(() => {
     async function menudata() {
       try {
-        let data = `https://www.swiggy.com/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=15.796320490637022&lng=74.47427418082952&restaurantId=${id}&submitAction=ENTER`;
-        let response = await axios.get(data);
-
+        // let data = `https://www.swiggy.com/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=15.796320490637022&lng=74.47427418082952&restaurantId=${id}&submitAction=ENTER`;
+        // let response = await axios.get(data);
+let response = await axios.get(`${import.meta.env.VITE_API_URL}/api/menu/${id}`);
 
         const items =
           response?.data?.data?.cards?.[5]
@@ -23,7 +23,8 @@ export default function Menu() {
             ?.card?.card?.itemCards;
         setrestdetail(items);
       } catch (error) {
-
+    console.log(error);
+  setrestdetail([]);
       }
     }
     menudata();
