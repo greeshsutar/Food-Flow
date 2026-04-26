@@ -12,10 +12,10 @@ export default function Login() {
   });
 
   const [msg, setmsg] = useState("");
+  const [loading, setLoading] = useState(false); // ✅ added
 
   function handleChange(e) {
     const { name, value } = e.target;
-
     if (name === "method") {
       setformdata((prev) => ({
         ...prev,
@@ -34,6 +34,7 @@ export default function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     setmsg("");
+    setLoading(true); // ✅ added
 
     const verifydata = {
       password: formdata.password,
@@ -43,42 +44,37 @@ export default function Login() {
     };
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/login`
-, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(verifydata)
       });
 
       const result = await res.json();
 
+      if (result?.requireOtp === true) {
+        if (formdata.gmail) {
+          localStorage.setItem("verifyType", "email");
+          localStorage.setItem("verifyEmail", formdata.gmail);
+        } else {
+          localStorage.setItem("verifyType", "phone");
+          localStorage.setItem("verifyMobile", formdata.mobileno);
+        }
+        navigate("/signup-otp");
+        return;
+      }
 
-
-      // 🔥 FIXED OTP CHECK (STRICT)
-  if (result?.requireOtp === true) {
-  if (formdata.gmail) {
-    localStorage.setItem("verifyType", "email");
-    localStorage.setItem("verifyEmail", formdata.gmail);
-  } else {
-    localStorage.setItem("verifyType", "phone");
-    localStorage.setItem("verifyMobile", formdata.mobileno);
-  }
-  navigate("/signup-otp");
-  return;
-}
-
-if (res.ok) {
-  localStorage.setItem("token", result.token);
-  navigate("/"); // ✅ go to home not profile
-} else {
-  setmsg(result.message || "Login failed");
-}
+      if (res.ok) {
+        localStorage.setItem("token", result.token);
+        navigate("/");
+      } else {
+        setmsg(result.message || "Login failed");
+      }
 
     } catch (err) {
-
       setmsg("Error while logging in. Check your details.");
+    } finally {
+      setLoading(false); // ✅ added
     }
   }
 
@@ -87,20 +83,14 @@ if (res.ok) {
       <div className="bg-white rounded-2xl shadow-md w-full max-w-md p-8">
 
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">
-            Welcome back
-          </h2>
-          <p className="text-sm text-gray-500 mt-1">
-            Log in to your account
-          </p>
+          <h2 className="text-2xl font-bold text-gray-800">Welcome back</h2>
+          <p className="text-sm text-gray-500 mt-1">Log in to your account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Login via
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Login via</label>
             <select
               name="method"
               value={formdata.method}
@@ -114,11 +104,8 @@ if (res.ok) {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {formdata.method === "email"
-                ? "Email Address"
-                : "Mobile Number"}
+              {formdata.method === "email" ? "Email Address" : "Mobile Number"}
             </label>
-
             {formdata.method === "email" ? (
               <input
                 type="email"
@@ -142,17 +129,11 @@ if (res.ok) {
 
           <div>
             <div className="flex justify-between mb-1">
-              <label className="text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <Link
-                to="/forgot-password"
-                className="text-sm text-orange-500"
-              >
+              <label className="text-sm font-medium text-gray-700">Password</label>
+              <Link to="/forgot-password" className="text-sm text-orange-500">
                 Forgot Password?
               </Link>
             </div>
-
             <input
               type="password"
               name="password"
@@ -163,23 +144,36 @@ if (res.ok) {
             />
           </div>
 
-          {msg && (
-            <p className="text-red-500 text-sm">{msg}</p>
+          {/* Error */}
+          {msg && <p className="text-red-500 text-sm">{msg}</p>}
+
+          {/* ✅ Server waking up message */}
+          {loading && (
+            <p className="text-xs text-orange-400 text-center">
+              Connecting to server, please wait...
+            </p>
           )}
 
           <button
             type="submit"
-            className="w-full bg-orange-500 text-white py-2.5 rounded-lg"
+            disabled={loading}
+            className="w-full bg-orange-500 text-white py-2.5 rounded-lg disabled:opacity-60"
           >
-            Login
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Logging in...
+              </span>
+            ) : (
+              "Login"
+            )}
           </button>
+
         </form>
 
         <p className="mt-6 text-center text-sm text-gray-500">
           New here?{" "}
-          <Link to="/signup" className="text-orange-500">
-            Create account
-          </Link>
+          <Link to="/signup" className="text-orange-500">Create account</Link>
         </p>
 
       </div>
