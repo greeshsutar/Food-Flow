@@ -50,10 +50,6 @@ export default function Header() {
         Home
       </Link>
 
-      <Link to="/Offers" className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-orange-50 hover:text-orange-500 transition-colors">
-        <BiSolidOffer /> Offers
-      </Link>
-
       {isLoggedIn ? (
         <Link to="/profile" className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-orange-500 hover:bg-orange-50 transition-colors">
           <IoPersonOutline /> Hi, {username}
