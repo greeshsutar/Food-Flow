@@ -14,14 +14,15 @@ import About from './component/Footer/About.jsx';
 import Privacy from './component/Footer/Privacy.jsx';
 import Terms from './component/Footer/Term.jsx';
 import Contact from './component/Footer/Contact.jsx';
+import OtpVerification from './component/OtpVerification.jsx';
+import Checkout from './component/Header/Checkout.jsx';
+import PaymentSuccessful from './component/Header/PaymentSuccessful.jsx';
 
-//  Lazy loaded components
 const Cart = lazy(() => import('./component/Cart.jsx'));
 const Login = lazy(() => import('./component/Header/Login.jsx'));
 const Menu = lazy(() => import('./component/Menu.jsx'));
 const Profile = lazy(() => import('./component/Header/Profile.jsx'));
 const ForgotPassword = lazy(() => import('./component/Header/ForgetPassword.jsx'));
-
 
 const appRouter = createBrowserRouter([
   {
@@ -29,84 +30,59 @@ const appRouter = createBrowserRouter([
     element: <App />,
     errorElement: <Error />,
     children: [
-      { index: true, element: <Body /> },   
+      { index: true, element: <Body /> },
       { path: "/offer", element: <Offers /> },
       { path: "/signup", element: <SignUp /> },
+      { path: "/clock", element: <Clock /> }, // ✅ moved up, comma fixed
 
-      //  Wrap lazy routes with Suspense
       {
         path: "/cart",
-        element: (
-          <Suspense fallback={<h2>Loading Cart...</h2>}>
-            <Cart />
-          </Suspense>
-        )
+        element: <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>}><Cart /></Suspense>
       },
       {
         path: "/login",
-        element: (
-          <Suspense fallback={<h2>Loading Login...</h2>}>
-            <Login />
-          </Suspense>
-        )
+        element: <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>}><Login /></Suspense>
       },
       {
         path: "/RestraurentCard/:id",
-        element: (
-          <Suspense fallback={<h2>Loading Menu...</h2>}>
-            <Menu />
-          </Suspense>
-        )
+        element: <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>}><Menu /></Suspense>
       },
       {
         path: "/profile",
-        element: (
-          <Suspense fallback={<h2>Loading Profile...</h2>}>
-            <Profile />
-          </Suspense>
-        )
+        element: <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>}><Profile /></Suspense>
       },
       {
         path: "/forgot-password",
-        element: (
-          <Suspense fallback={<h2>Loading...</h2>}>
-            <ForgotPassword />
-          </Suspense>
-        )
+        element: <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>}><ForgotPassword /></Suspense>
       },
-       {
+      {
         path: "/about",
-        element: (
-          <Suspense fallback={<h2>Loading...</h2>}>
-            <About/>
-          </Suspense>
-        )
+        element: <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>}><About /></Suspense>
       },
-        {
+      {
         path: "/privacy",
-        element: (
-          <Suspense fallback={<h2>Loading...</h2>}>
-            <Privacy/>
-          </Suspense>
-        )
+        element: <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>}><Privacy /></Suspense>
       },
-        {
+      {
         path: "/term",
-        element: (
-          <Suspense fallback={<h2>Loading...</h2>}>
-            <Terms/>
-          </Suspense>
-        )
+        element: <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>}><Terms /></Suspense>
       },
-        {
+      {
         path: "/contact",
-        element: (
-          <Suspense fallback={<h2>Loading...</h2>}>
-            <Contact/>
-          </Suspense>
-        )
+        element: <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>}><Contact /></Suspense>
       },
-      { path: "/clock", element: <Clock /> }
+      {
+        path: "/signup-otp", // ✅ this must match navigate("/signup-otp") in SignUp.jsx
+        element: <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>}><OtpVerification/></Suspense>
+      },
+      {
+        path: "/checkout",
+        element: <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>}><Checkout /></Suspense>
+      },
+      {
+        path: "/payment-successful",
+        element: <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div></div>}><PaymentSuccessful/></Suspense>
+      }
     ]
   }
 ]);

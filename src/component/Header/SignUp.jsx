@@ -10,6 +10,7 @@ export default function SignUp() {
     password: "",
     method: "email"
   });
+
   const [msg, setmsg] = useState("");
   const navigate = useNavigate();
 
@@ -19,30 +20,71 @@ export default function SignUp() {
   };
 
   const handleMethodChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      method: e.target.value,
+    setFormData({
+      firstname: "",
+      lastname: "",
       gmail: "",
-      mobileno: ""
-    }));
+      mobileno: "",
+      password: "",
+      method: e.target.value
+    });
   };
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setmsg("");
+
+    if (!formData.firstname || !formData.lastname || !formData.password) {
+      return setmsg("All fields required");
+    }
+
+    if (formData.method === "phone" && formData.mobileno.length !== 10) {
+      return setmsg("Enter valid phone number");
+    }
+
     try {
       const res = await fetch("http://localhost:3060/user/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+  firstname: formData.firstname,
+  lastname: formData.lastname,
+  password: formData.password,
+  ...(formData.method === "email" 
+    ? { gmail: formData.gmail } 
+    : { mobileno: formData.mobileno })
+})
       });
+
       const result = await res.json();
+
+
+
+      // 🔥 HANDLE OTP FLOW (MAIN FIX)
+    // ✅ Correct keys — matches what OtpVerification.jsx reads
+if (result?.requireOtp === true) {
+  // ✅ save based on what was actually filled
+  if (formData.gmail) {
+    localStorage.setItem("verifyType", "email");
+    localStorage.setItem("verifyEmail", formData.gmail);
+  } else {
+    localStorage.setItem("verifyType", "phone");
+    localStorage.setItem("verifyMobile", formData.mobileno);
+  }
+  navigate("/signup-otp");
+  return;
+}
+
+      // ✅ SUCCESS (fallback)
       if (res.ok) {
         alert("Signup successful!");
-        navigate("/Login");
+        navigate("/login");
       } else {
-        setmsg(result.message);
+        setmsg(result.message || "Signup failed");
       }
-    } catch {
+
+    } catch (err) {
+
       setmsg("Something went wrong. Try again.");
     }
   }
@@ -51,117 +93,78 @@ export default function SignUp() {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
       <div className="bg-white rounded-2xl shadow-md w-full max-w-md p-8">
 
-        {/* Header */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Create Account</h2>
-          <p className="text-sm text-gray-500 mt-1">Sign up to get started with Swiggy</p>
-        </div>
+        <h2 className="text-2xl font-bold mb-4">Create Account</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
 
-          {/* Name Row */}
           <div className="flex gap-3">
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-              <input
-                type="text"
-                name="firstname"
-                placeholder="John"
-                value={formData.firstname}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-              />
-            </div>
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-              <input
-                type="text"
-                name="lastname"
-                placeholder="Doe"
-                value={formData.lastname}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-              />
-            </div>
-          </div>
-
-          {/* Method Selector */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Sign up via</label>
-            <select
-              name="method"
-              value={formData.method}
-              onChange={handleMethodChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-            >
-              <option value="email">Email</option>
-              <option value="phone">Phone</option>
-            </select>
-          </div>
-
-          {/* Email or Phone */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {formData.method === "email" ? "Email Address" : "Mobile Number"}
-            </label>
-            {formData.method === "email" ? (
-              <input
-                type="email"
-                name="gmail"
-                placeholder="you@example.com"
-                value={formData.gmail}
-                onChange={handleChange}
-                required
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-              />
-            ) : (
-              <input
-                type="text"
-                name="mobileno"
-                placeholder="10-digit mobile number"
-                value={formData.mobileno}
-                onChange={handleChange}
-                required
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-              />
-            )}
-          </div>
-
-          {/* Password */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
-              type="password"
-              name="password"
-              placeholder="Create a strong password"
-              value={formData.password}
+              name="firstname"
+              placeholder="First Name"
+              value={formData.firstname}
               onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+              className="w-full border px-3 py-2 rounded"
+            />
+            <input
+              name="lastname"
+              placeholder="Last Name"
+              value={formData.lastname}
+              onChange={handleChange}
+              className="w-full border px-3 py-2 rounded"
             />
           </div>
 
-          {/* Error */}
-          {msg && <p className="text-sm text-red-500">{msg}</p>}
-
-          {/* Submit */}
-          <button
-            type="submit"
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 rounded-lg text-sm transition-colors"
+          <select
+            name="method"
+            value={formData.method}
+            onChange={handleMethodChange}
+            className="w-full border px-3 py-2 rounded"
           >
-            Create Account
-          </button>
+            <option value="email">Email</option>
+            <option value="phone">Phone</option>
+          </select>
 
+          {formData.method === "email" ? (
+            <input
+              name="gmail"
+              placeholder="Email"
+              value={formData.gmail}
+              onChange={handleChange}
+              className="w-full border px-3 py-2 rounded"
+            />
+          ) : (
+            <input
+              name="mobileno"
+              placeholder="Phone"
+              value={formData.mobileno}
+              onChange={handleChange}
+              className="w-full border px-3 py-2 rounded"
+            />
+          )}
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+
+          {msg && <p className="text-red-500 text-sm">{msg}</p>}
+
+          <button className="w-full bg-orange-500 text-white py-2 rounded">
+            Sign Up
+          </button>
         </form>
 
-        {/* Login Link */}
-        <p className="mt-6 text-center text-sm text-gray-500">
+        <p className="text-sm mt-4 text-center">
           Already have an account?{" "}
           <span
-            onClick={() => navigate("/Login")}
-            className="text-orange-500 font-medium cursor-pointer hover:underline"
+            onClick={() => navigate("/login")}
+            className="text-orange-500 cursor-pointer"
           >
-            Log in
+            Login
           </span>
         </p>
 

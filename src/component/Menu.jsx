@@ -7,7 +7,7 @@ import { addItem } from "./utils/CartSlice";
 export default function Menu() {
 
   let {id} = useParams();
-  console.log(id);
+
   const [restdetail, setrestdetail] = useState([]);
 
   useEffect(() => {
@@ -15,19 +15,15 @@ export default function Menu() {
       try {
         let data = `https://www.swiggy.com/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=15.796320490637022&lng=74.47427418082952&restaurantId=${id}&submitAction=ENTER`;
         let response = await axios.get(data);
-        console.log(response.data.data.statusMessage);
-        console.log(
-          response?.data?.data?.cards?.[5]
-            ?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[5]
-            ?.card?.card?.itemCards
-        );
+
+
         const items =
           response?.data?.data?.cards?.[5]
             ?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[5]
             ?.card?.card?.itemCards;
         setrestdetail(items);
       } catch (error) {
-        console.log(error);
+
       }
     }
     menudata();
@@ -36,8 +32,8 @@ export default function Menu() {
   let dispatchaction = useDispatch();
 
   function handleaction(item) {
-    console.log("Clicked", item);
-    console.log(item.card.info.id);
+
+
     dispatchaction(addItem(item));
   }
 if (!restdetail?.length) {

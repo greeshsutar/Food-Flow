@@ -1,8 +1,8 @@
-export default function Searchcom({ swiggydata, setinputdata }) {  // ✅ destructure props
+export default function Searchcom({ swiggydata, setinputdata }) {  //  destructure props
 
   function handleinput(searchText) {
     let newfilter = swiggydata.filter((item) =>
-      item.info.name.toLowerCase().includes(searchText.toLowerCase()) // ✅ case insensitive
+      item.info.name.toLowerCase().includes(searchText.toLowerCase()) //  case insensitive
     );
     setinputdata(newfilter);
   }

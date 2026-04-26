@@ -6,8 +6,8 @@ import { useState } from "react";
 export default function Cart() {
   const cartitem = useSelector((store) => store.cart.items);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
  const [msg,setmsg]= useState("");
+ const navigate = useNavigate();
   function handleremove(item) {
     dispatch(removeItem(item.card.info.id));
   }
@@ -27,28 +27,7 @@ export default function Cart() {
       navigate("/login");
       return;
     }
-  try{
-  let amount = total.toFixed(2)
-    let res =await fetch("http:localhost/3060/user/payment",{
-     method:"POST",
-     headers:{
-      "Content-Type":"appication/json"
-     },
-     body:JSON.stringify(amount)
-    })
-   let result = await res.json()
-    if(res.ok){
-     alert("Payment Successful")
-    }
-    else{
-      setmsg(result.message);
-    }
-
-  }
-    catch(err){
-      setmsg("Something Went Wrong ")
-    }
-
+    navigate("/checkout")
 
   }
 

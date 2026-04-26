@@ -17,7 +17,7 @@ export default function RestaurantCard({ swiggydata, datafilter }) {
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
               src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/${item.info.cloudinaryImageId}`}
               alt={item.info.name}
-              onError={(e) => {         // ✅ only this is added
+              onError={(e) => {         // only this is added
                 e.target.onerror = null;
                 e.target.src = "";
                 e.target.style.display = "none";
