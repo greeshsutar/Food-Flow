@@ -57,7 +57,7 @@ export default function ForgotPassword() {
     try {
       setloading(true);
 
-      const res = await fetch("http://localhost:3060/user/forgot-password", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -96,7 +96,8 @@ export default function ForgotPassword() {
     try {
       setloading(true);
 
-      const res = await fetch("http://localhost:3060/user/reset-password", {
+      const res = await fetch( `${import.meta.env.VITE_API_URL}/user/reset-password`
+, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(verifydata)

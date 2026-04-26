@@ -46,7 +46,8 @@ export default function Checkout() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:3060/user/checkout", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/checkout`,
+ {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +97,8 @@ export default function Checkout() {
         handler: async function (response) {
           try {
             const verifyRes = await fetch(
-              "http://localhost:3060/user/verify-payment",
+             `${import.meta.env.VITE_API_URL}/user/verify-payment`
+
               {
                 method: "POST",
                 headers: {

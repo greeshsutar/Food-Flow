@@ -16,7 +16,8 @@ export default function Profile() {
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const res = await fetch("http://localhost:3060/user/profile", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`,
+ {
           headers: { Authorization: "Bearer " + token },
         });
         const data = await res.json();
