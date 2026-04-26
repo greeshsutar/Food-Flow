@@ -97,7 +97,7 @@ export default function Checkout() {
         handler: async function (response) {
           try {
             const verifyRes = await fetch(
-             `${import.meta.env.VITE_API_URL}/user/verify-payment`
+             `${import.meta.env.VITE_API_URL}/user/verify-payment`,
 
               {
                 method: "POST",
