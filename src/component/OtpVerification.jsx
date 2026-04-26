@@ -57,7 +57,7 @@ export default function OtpVerification() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/signup-otp`
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/signup-otp`,
  {
         method: "POST",
         headers: { "Content-Type": "application/json" },
