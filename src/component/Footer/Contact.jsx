@@ -16,7 +16,7 @@ export default function Contact() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/contact`
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/contact`,
  {
         method: "POST",
         headers: { "Content-Type": "application/json" },
