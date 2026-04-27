@@ -70,7 +70,7 @@ export default function Checkout() {
       // ✅ COD
       if (payment === "cod") {
         dispatch(clearCart()); // ✅ clear cart
-        navigate("/payment-successful");
+        navigate("/payment-successful", { state: { method: "COD" } })
         return;
       }
 
@@ -113,7 +113,7 @@ export default function Checkout() {
 
             if (verifyRes.ok) {
               dispatch(clearCart()); // ✅ clear cart
-              navigate("/payment-successful");
+               navigate("/payment-successful", { state: { method: "ONLINE" } });
             } else {
               alert(verifyData.message || "Payment verification failed");
             }
