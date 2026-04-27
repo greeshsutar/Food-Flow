@@ -4,7 +4,7 @@ export default function RestaurantCard({ swiggydata, datafilter }) {
   const data = datafilter.length > 0 ? datafilter : swiggydata;
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 py-4">
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 py-4">
       {data.map((item) => (
         <Link
           to={`/RestraurentCard/${item.info.id}`}
