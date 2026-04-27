@@ -141,6 +141,11 @@ export default function Checkout() {
       };
 
       const rzp = new window.Razorpay(options);
+      rzp.on("payment.failed", function (response) {
+  console.log("FULL ERROR:", response);
+  console.log("DESCRIPTION:", response.error.description);
+  console.log("REASON:", response.error.reason);
+});
       rzp.open();
 
     } catch (err) {
