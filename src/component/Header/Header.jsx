@@ -1,6 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { IoPersonOutline, IoMenu, IoClose } from "react-icons/io5";
-import { BiSolidOffer } from "react-icons/bi";
 import { MdOutlineShoppingCart, MdOutlineLogin, MdOutlineLogout } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
@@ -22,7 +21,7 @@ export default function Header() {
   const [username, setUsername] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Re-check token on every route change
+  // Check login on route change
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -33,7 +32,7 @@ export default function Header() {
       setIsLoggedIn(false);
       setUsername("");
     }
-    setMenuOpen(false); // close menu on page change
+    setMenuOpen(false);
   }, [location]);
 
   function handleLogout() {
@@ -43,79 +42,113 @@ export default function Header() {
     navigate("/", { replace: true });
   }
 
-  // All nav links in one array — no repetition
-  const navLinks = (
-    <>
-      <Link to="/" className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-orange-50 hover:text-orange-500 transition-colors">
-        Home
-      </Link>
+  // ✅ RIGHT SECTION (VISIBLE ALWAYS)
+  const rightSection = (
+    <div className="flex items-center gap-3">
 
-      {isLoggedIn ? (
-        <Link to="/profile" className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-orange-500 hover:bg-orange-50 transition-colors">
-          <IoPersonOutline /> Hi, {username}
-        </Link>
-      ) : (
-        <Link to="/SignUp" className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-orange-50 hover:text-orange-500 transition-colors">
-          <IoPersonOutline /> Sign Up
+      {/* Username */}
+      {isLoggedIn && (
+        <Link
+          to="/profile"
+          className="flex items-center gap-1 text-sm font-medium text-orange-500"
+        >
+          <IoPersonOutline />
+          <span className="hidden sm:inline">{username}</span>
         </Link>
       )}
 
-      <Link to="/Cart" className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-orange-50 hover:text-orange-500 transition-colors">
+      {/* Cart */}
+      <Link
+        to="/Cart"
+        className="relative flex items-center text-2xl text-gray-700"
+      >
         <MdOutlineShoppingCart />
-        Cart
         {cartItem.length > 0 && (
-          <span className="bg-orange-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+          <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] px-1.5 rounded-full">
             {cartItem.length}
           </span>
         )}
       </Link>
+    </div>
+  );
+
+  // ✅ HAMBURGER LINKS (NO CART / USER HERE)
+  const navLinks = (
+    <>
+      <Link
+        to="/"
+        className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-orange-50 hover:text-orange-500"
+      >
+        Home
+      </Link>
 
       {isLoggedIn ? (
-        <button onClick={handleLogout} className="flex items-center gap-1.5 px-4 py-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white text-sm font-semibold rounded-lg transition-colors">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-1.5 px-4 py-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white text-sm font-semibold rounded-lg"
+        >
           <MdOutlineLogout /> Logout
         </button>
       ) : (
-        <Link to="/Login" className="flex items-center gap-1.5 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-lg transition-colors">
-          <MdOutlineLogin /> Login
-        </Link>
+        <>
+          <Link
+            to="/SignUp"
+            className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-orange-50 hover:text-orange-500"
+          >
+            Sign Up
+          </Link>
+
+          <Link
+            to="/Login"
+            className="flex items-center gap-1.5 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-lg"
+          >
+            <MdOutlineLogin /> Login
+          </Link>
+        </>
       )}
     </>
   );
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50" >
-      <div className="flex items-center justify-between px-6 py-5">
+    <nav className="bg-white shadow-md sticky top-0 z-50">
+      
+      {/* HEADER */}
+      <div className="flex items-center justify-between px-4 py-4">
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <span className="text-2xl">🍽️</span>
-          <span className="text-xl font-extrabold text-orange-500 tracking-tight">
+          <span className="text-xl font-extrabold text-orange-500">
             Food<span className="text-gray-800">Flow</span>
           </span>
         </Link>
 
-        {/* Desktop — show on md and above */}
-        <ul className="hidden md:flex items-center gap-1">
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-4">
+          {rightSection}
           {navLinks}
-        </ul>
+        </div>
 
-        {/* Mobile — hamburger button */}
-        <button
-          className="md:hidden text-2xl text-gray-700"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <IoClose /> : <IoMenu />}
-        </button>
+        {/* Mobile Right */}
+        <div className="flex items-center gap-3 md:hidden">
+          {rightSection}
 
+          {/* Hamburger */}
+          <button
+            className="text-2xl text-gray-700"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <IoClose /> : <IoMenu />}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile dropdown */}
+      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden flex flex-col gap-1 px-6 py-4 border-t border-gray-100">
+        <div className="md:hidden flex flex-col gap-2 px-4 py-4 border-t">
           {navLinks}
         </div>
       )}
-
     </nav>
   );
 }
