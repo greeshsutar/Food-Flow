@@ -132,6 +132,7 @@ export default function Checkout() {
         prefill: {
           name: payload?.name || "User",
           email: payload?.email || "",
+          contact: "9999999999",
         },
 
         theme: {
