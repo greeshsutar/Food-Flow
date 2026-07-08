@@ -15,6 +15,8 @@ export default function Menu() {
       try {
         // let data = `https://www.swiggy.com/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=15.796320490637022&lng=74.47427418082952&restaurantId=${id}&submitAction=ENTER`;
         // let response = await axios.get(data);
+         
+        //<img src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_300,h_300,c_fit/FOOD_CATALOG/IMAGES/CMS/2025/9/10/a1770166-5a13-43e2-8673-c9e5ce0e5f02_5143af32-d9d7-44b6-9ee7-8dda3d333144.jpg">
 let response = await axios.get(`${import.meta.env.VITE_API_URL}/api/menu/${id}`);
 
         const items =

@@ -17,7 +17,7 @@ import Contact from './component/Footer/Contact.jsx';
 import OtpVerification from './component/OtpVerification.jsx';
 import Checkout from './component/Header/Checkout.jsx';
 import PaymentSuccessful from './component/Header/PaymentSuccessful.jsx';
-
+import {GoogleOAuthProvider} from "@react-oauth/google";
 const Cart = lazy(() => import('./component/Cart.jsx'));
 const Login = lazy(() => import('./component/Header/Login.jsx'));
 const Menu = lazy(() => import('./component/Menu.jsx'));
@@ -86,9 +86,13 @@ const appRouter = createBrowserRouter([
     ]
   }
 ]);
+console.log("Google Client ID:", import.meta.env.VITE_CLIENT_ID);
 
 createRoot(document.getElementById('root')).render(
-  <Provider store={appStore}>
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
+      <Provider store={appStore}>
     <RouterProvider router={appRouter} />
   </Provider>
+  </GoogleOAuthProvider>
+
 );

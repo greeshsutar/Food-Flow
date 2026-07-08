@@ -1,5 +1,7 @@
+import { GoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -38,43 +40,44 @@ export default function SignUp() {
       return setmsg("All fields required");
     }
 
+    if (formData.method === "email" && !formData.gmail) {
+      return setmsg("Email is required");
+    }
+
     if (formData.method === "phone" && formData.mobileno.length !== 10) {
       return setmsg("Enter valid phone number");
     }
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/signup`
-, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-  firstname: formData.firstname,
-  lastname: formData.lastname,
-  password: formData.password,
-  ...(formData.method === "email" 
-    ? { gmail: formData.gmail } 
-    : { mobileno: formData.mobileno })
-})
+          firstname: formData.firstname,
+          lastname: formData.lastname,
+          password: formData.password,
+          ...(formData.method === "email"
+            ? { gmail: formData.gmail }
+            : { mobileno: formData.mobileno })
+        })
       });
 
       const result = await res.json();
 
-
-
       // 🔥 HANDLE OTP FLOW (MAIN FIX)
-    // ✅ Correct keys — matches what OtpVerification.jsx reads
-if (result?.requireOtp === true) {
-  // ✅ save based on what was actually filled
-  if (formData.gmail) {
-    localStorage.setItem("verifyType", "email");
-    localStorage.setItem("verifyEmail", formData.gmail);
-  } else {
-    localStorage.setItem("verifyType", "phone");
-    localStorage.setItem("verifyMobile", formData.mobileno);
-  }
-  navigate("/signup-otp");
-  return;
-}
+      // ✅ Correct keys — matches what OtpVerification.jsx reads
+      if (result?.requireOtp === true) {
+        // ✅ save based on what was actually filled
+        if (formData.gmail) {
+          localStorage.setItem("verifyType", "email");
+          localStorage.setItem("verifyEmail", formData.gmail);
+        } else {
+          localStorage.setItem("verifyType", "phone");
+          localStorage.setItem("verifyMobile", formData.mobileno);
+        }
+        navigate("/signup-otp");
+        return;
+      }
 
       // ✅ SUCCESS (fallback)
       if (res.ok) {
@@ -85,8 +88,36 @@ if (result?.requireOtp === true) {
       }
 
     } catch (err) {
-
       setmsg("Something went wrong. Try again.");
+    }
+  }
+
+  async function handleGoogleSuccess(credentialResponse) {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/google-login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: credentialResponse.credential,
+        }),
+      });
+
+      const data = await res.json();
+     console.log("Status:", res.status);
+console.log("Response:", data);
+      if (!res.ok) {
+        setmsg(data.message || "Google Login Failed");
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      navigate("/profile");
+    } catch (err) {
+      setmsg("Google Login Failed");
     }
   }
 
@@ -158,6 +189,13 @@ if (result?.requireOtp === true) {
             Sign Up
           </button>
         </form>
+
+        <div className="mt-4 flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => setmsg("Google Login Failed")}
+          />
+        </div>
 
         <p className="text-sm mt-4 text-center">
           Already have an account?{" "}
