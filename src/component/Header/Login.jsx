@@ -79,31 +79,33 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl shadow-md w-full max-w-md p-8">
+    <div className="min-h-screen bg-gray-50/50 flex items-center justify-center px-6 py-12">
+      <div className="bg-white rounded-3xl shadow-[0_4px_25px_-5px_rgba(0,0,0,0.05)] border border-gray-100 w-full max-w-md p-8 md:p-10 transition-all duration-300">
 
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Welcome back</h2>
-          <p className="text-sm text-gray-500 mt-1">Log in to your account</p>
+        <div className="mb-8">
+          <h2 className="text-2xl font-black text-gray-800 tracking-tight">Welcome Back</h2>
+          <p className="text-sm font-semibold text-gray-400 mt-1">Log in to your FoodFlow account</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Login via</label>
-            <select
-              name="method"
-              value={formdata.method}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-4 py-2.5 text-sm"
-            >
-              <option value="email">Email</option>
-              <option value="phone">Phone</option>
-            </select>
+            <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">Login Via</label>
+            <div className="relative">
+              <select
+                name="method"
+                value={formdata.method}
+                onChange={handleChange}
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-gray-50/50 focus:bg-white cursor-pointer"
+              >
+                <option value="email">Email Address</option>
+                <option value="phone">Phone Number</option>
+              </select>
+            </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">
               {formdata.method === "email" ? "Email Address" : "Mobile Number"}
             </label>
             {formdata.method === "email" ? (
@@ -113,7 +115,8 @@ export default function Login() {
                 value={formdata.gmail}
                 onChange={handleChange}
                 required
-                className="w-full border rounded-lg px-4 py-2.5 text-sm"
+                placeholder="you@example.com"
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-gray-50/50 focus:bg-white"
               />
             ) : (
               <input
@@ -122,15 +125,16 @@ export default function Login() {
                 value={formdata.mobileno}
                 onChange={handleChange}
                 required
-                className="w-full border rounded-lg px-4 py-2.5 text-sm"
+                placeholder="10-digit mobile number"
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-gray-50/50 focus:bg-white"
               />
             )}
           </div>
 
           <div>
-            <div className="flex justify-between mb-1">
-              <label className="text-sm font-medium text-gray-700">Password</label>
-              <Link to="/forgot-password" className="text-sm text-orange-500">
+            <div className="flex justify-between mb-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Password</label>
+              <Link to="/forgot-password" className="text-xs font-bold text-orange-500 hover:text-orange-600">
                 Forgot Password?
               </Link>
             </div>
@@ -140,16 +144,21 @@ export default function Login() {
               value={formdata.password}
               onChange={handleChange}
               required
-              className="w-full border rounded-lg px-4 py-2.5 text-sm"
+              placeholder="••••••••"
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-gray-50/50 focus:bg-white"
             />
           </div>
 
           {/* Error */}
-          {msg && <p className="text-red-500 text-sm">{msg}</p>}
+          {msg && (
+            <div className="bg-red-50 text-red-600 text-xs font-bold p-3.5 rounded-xl border border-red-100">
+              ⚠️ {msg}
+            </div>
+          )}
 
           {/* ✅ Server waking up message */}
           {loading && (
-            <p className="text-xs text-orange-400 text-center">
+            <p className="text-xs font-semibold text-orange-400 text-center animate-pulse">
               Connecting to server, please wait...
             </p>
           )}
@@ -157,7 +166,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-orange-500 text-white py-2.5 rounded-lg disabled:opacity-60"
+            className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-md hover:shadow-lg disabled:opacity-60 disabled:pointer-events-none cursor-pointer flex items-center justify-center"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">
@@ -171,9 +180,9 @@ export default function Login() {
 
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-500">
+        <p className="mt-8 text-center text-sm text-gray-500 font-medium">
           New here?{" "}
-          <Link to="/signup" className="text-orange-500">Create account</Link>
+          <Link to="/signup" className="text-orange-500 font-bold hover:underline">Create account</Link>
         </p>
 
       </div>

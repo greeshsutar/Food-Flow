@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { MdAccessTime } from "react-icons/md";
 
 export default function Clock() {
   const [clock, setclock] = useState(new Date().toLocaleTimeString());
@@ -11,9 +12,9 @@ export default function Clock() {
   }, [clock]);
 
   return (
-    <div className="flex items-center gap-2 bg-gray-100 border border-gray-200 px-4 py-2 rounded-xl">
-      <span className="text-lg">🕐</span>
-      <span className="text-sm font-semibold text-gray-700 tracking-wide">
+    <div className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 px-4 py-2 rounded-xl text-white shadow-sm shadow-orange-100 hover:shadow-md transition-all duration-300">
+      <MdAccessTime className="text-lg animate-pulse" />
+      <span className="text-xs font-black tracking-widest font-mono">
         {clock}
       </span>
     </div>

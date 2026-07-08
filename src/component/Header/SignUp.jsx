@@ -121,10 +121,13 @@ export default function SignUp() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl shadow-md w-full max-w-md p-8">
+    <div className="min-h-screen bg-gray-50/50 flex items-center justify-center px-6 py-12">
+      <div className="bg-white rounded-3xl shadow-[0_4px_25px_-5px_rgba(0,0,0,0.05)] border border-gray-100 w-full max-w-md p-8 md:p-10 transition-all duration-300">
 
-        <h2 className="text-2xl font-bold mb-4">Create Account</h2>
+        <div className="mb-8">
+          <h2 className="text-2xl font-black text-gray-800 tracking-tight">Create Account</h2>
+          <p className="text-sm font-semibold text-gray-400 mt-1">Join FoodFlow to start ordering</p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
 
@@ -134,73 +137,92 @@ export default function SignUp() {
               placeholder="First Name"
               value={formData.firstname}
               onChange={handleChange}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-gray-50/50 focus:bg-white"
             />
             <input
               name="lastname"
               placeholder="Last Name"
               value={formData.lastname}
               onChange={handleChange}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-gray-50/50 focus:bg-white"
             />
           </div>
 
-          <select
-            name="method"
-            value={formData.method}
-            onChange={handleMethodChange}
-            className="w-full border px-3 py-2 rounded"
-          >
-            <option value="email">Email</option>
-            <option value="phone">Phone</option>
-          </select>
+          <div>
+            <select
+              name="method"
+              value={formData.method}
+              onChange={handleMethodChange}
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-gray-50/50 focus:bg-white cursor-pointer"
+            >
+              <option value="email">Email Address</option>
+              <option value="phone">Phone Number</option>
+            </select>
+          </div>
 
-          {formData.method === "email" ? (
+          <div>
+            {formData.method === "email" ? (
+              <input
+                name="gmail"
+                placeholder="Email Address"
+                value={formData.gmail}
+                onChange={handleChange}
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-gray-50/50 focus:bg-white"
+              />
+            ) : (
+              <input
+                name="mobileno"
+                placeholder="10-digit mobile number"
+                value={formData.mobileno}
+                onChange={handleChange}
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-gray-50/50 focus:bg-white"
+              />
+            )}
+          </div>
+
+          <div>
             <input
-              name="gmail"
-              placeholder="Email"
-              value={formData.gmail}
+              type="password"
+              name="password"
+              placeholder="Create Password"
+              value={formData.password}
               onChange={handleChange}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-gray-50/50 focus:bg-white"
             />
-          ) : (
-            <input
-              name="mobileno"
-              placeholder="Phone"
-              value={formData.mobileno}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 rounded"
-            />
+          </div>
+
+          {msg && (
+            <div className="bg-red-50 text-red-600 text-xs font-bold p-3.5 rounded-xl border border-red-100">
+              ⚠️ {msg}
+            </div>
           )}
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          />
-
-          {msg && <p className="text-red-500 text-sm">{msg}</p>}
-
-          <button className="w-full bg-orange-500 text-white py-2 rounded">
+          <button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center">
             Sign Up
           </button>
         </form>
 
-        <div className="mt-4 flex justify-center">
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-150"></div>
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-white px-3 font-bold text-gray-400">Or continue with</span>
+          </div>
+        </div>
+
+        <div className="flex justify-center">
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={() => setmsg("Google Login Failed")}
           />
         </div>
 
-        <p className="text-sm mt-4 text-center">
+        <p className="mt-8 text-center text-sm text-gray-500 font-medium">
           Already have an account?{" "}
           <span
             onClick={() => navigate("/login")}
-            className="text-orange-500 cursor-pointer"
+            className="text-orange-500 font-bold hover:underline cursor-pointer"
           >
             Login
           </span>
