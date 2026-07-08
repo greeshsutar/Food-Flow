@@ -105,8 +105,7 @@ export default function SignUp() {
       });
 
       const data = await res.json();
-     console.log("Status:", res.status);
-console.log("Response:", data);
+  
       if (!res.ok) {
         setmsg(data.message || "Google Login Failed");
         return;
